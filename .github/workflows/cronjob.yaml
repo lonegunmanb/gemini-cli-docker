@@ -17,26 +17,26 @@ jobs:
     steps:
       - name: Check Gemini CLI version
         run: |
-        latest=$(gh release list \
-        --repo google-gemini/gemini-cli \
-        --exclude-pre-releases \
-        --exclude-drafts \
-        --json tagName | \
-        jq -r '.[].tagName' | \
-        grep -E '^[vV]?[0-9]+\.[0-9]+\.[0-9]+$' | \
-        sort -V | \
-        tail -n1)
-        echo "gemini cli latest version: $latest"
-        echo VERSION=$latest >> $GITHUB_ENV
-
-        # Check if current repo already has this tag
-        tag_exists=$(gh api repos/${{ github.repository }}/git/refs/tags/$latest --silent && echo "true" || echo "")
-        if [ -n "$tag_exists" ]; then
-          echo "Tag $latest already exists in this repository. Stopping workflow."
-          exit 0
-        fi
+          latest=$(gh release list \
+          --repo google-gemini/gemini-cli \
+          --exclude-pre-releases \
+          --exclude-drafts \
+          --json tagName | \
+          jq -r '.[].tagName' | \
+          grep -E '^[vV]?[0-9]+\.[0-9]+\.[0-9]+$' | \
+          sort -V | \
+          tail -n1)
+          echo "gemini cli latest version: $latest"
+          echo VERSION=$latest >> $GITHUB_ENV
+  
+          # Check if current repo already has this tag
+          tag_exists=$(gh api repos/${{ github.repository }}/git/refs/tags/$latest --silent && echo "true" || echo "")
+          if [ -n "$tag_exists" ]; then
+            echo "Tag $latest already exists in this repository. Stopping workflow."
+            exit 0
+          fi
         
-        echo "TAG_EXISTS=$tag_exists" >> $GITHUB_ENV
+          echo "TAG_EXISTS=$tag_exists" >> $GITHUB_ENV
       - name: Checkout code
         if: ${{ env.TAG_EXISTS != 'true' }}
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac #v4.0.0
