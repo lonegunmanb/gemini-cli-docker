@@ -35,7 +35,7 @@ jobs:
           tag_exists=$(gh api repos/${{ github.repository }}/git/refs/tags/$latest --silent && echo "true" || echo "")
           if [ -n "$tag_exists" ]; then
             echo "Tag $latest already exists in this repository. Stopping workflow."
-            echo "TAG_EXISTS='true'" >> $GITHUB_ENV
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
             exit 0
           fi
 
