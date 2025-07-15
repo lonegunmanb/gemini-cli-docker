@@ -75,8 +75,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_SERVER_URL }}/${{ secrets.DOCKER_REPO }}:latest
             ${{ secrets.DOCKER_SERVER_URL }}/${{ secrets.DOCKER_REPO }}:${{ env.VERSION }}
-            ghcr.io/${{ secrets.DOCKER_REPO }}:latest
-            ghcr.io/${{ secrets.DOCKER_REPO }}:${{ env.VERSION }}
+            ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/gemini-cli:latest
+            ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/gemini-cli:${{ env.VERSION }}
           build-args: |
             VERSION=${{ env.VERSION }}
       - name: Create and push tag
