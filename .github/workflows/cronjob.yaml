@@ -55,6 +55,13 @@ jobs:
           registry: ${{ secrets.DOCKER_SERVER_URL }}
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to GHCR
+        if: ${{ env.TAG_EXISTS != 'true' }}
+        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc # v2.2.0
+        with:
+          registry: "ghcr.io"
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN2 }}
       - name: Build and push
         id: docker_build
         if: ${{ env.TAG_EXISTS != 'true' }}
@@ -68,6 +75,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_SERVER_URL }}/${{ secrets.DOCKER_REPO }}:latest
             ${{ secrets.DOCKER_SERVER_URL }}/${{ secrets.DOCKER_REPO }}:${{ env.VERSION }}
+            ghcr.io/${{ secrets.DOCKER_REPO }}:latest
+            ghcr.io/${{ secrets.DOCKER_REPO }}:${{ env.VERSION }}
           build-args: |
             VERSION=${{ env.VERSION }}
       - name: Create and push tag
